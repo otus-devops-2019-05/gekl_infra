@@ -2,6 +2,7 @@
 ---
 # Выполнено Занятие №5 ДЗ №1 (GCP)
 
+
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
 
     [*] [Знакомство с облачной инфраструктурой. Google Cloud Platform](#gcp)
@@ -21,8 +22,11 @@
 - [Создан и поключен ssl сертификат для веб-интерфейса Pritunl](#task10)
 
 <a name="#gcp"><h4>Парметры ВМ</h4></a>
+
 bastion_IP = 35.247.9.23
+
 someinternalhost_IP = 10.138.0.4
+
 
 user gk
 
