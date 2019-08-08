@@ -1,5 +1,3 @@
-
----
 # Выполнено Занятие №5 ДЗ №1 (GCP)
 
 
@@ -77,8 +75,6 @@ PR checklist
 ---
 # Выполнено ДЗ №2 (GIT2)
 ## gekl_infra git2 [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=play-travis)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
-
-
 
     [*] Основное ДЗ
     [*] Задание со *
