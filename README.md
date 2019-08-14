@@ -107,7 +107,8 @@ create default-puma-server \
 --target-tags puma-server \
 --source-ranges 0.0.0.0/0 \
 --rules TCP:9292
-$gcloud compute instances create reddit-appp \
+
+$gcloud compute instances create reddit-app \
 --boot-disk-size=10GB \
 --image-family ubuntu-1604-lts \
 --image-project=ubuntu-os-cloud \
