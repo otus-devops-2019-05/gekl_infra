@@ -98,18 +98,26 @@ chmod +x *.sh
 ```
 <a name="#task10"><h5>Дополнительное задание startupscript, дополнительное задание firewall</h5></a>
 
-[root@kglinux ~]# gcloud compute instances create reddit-appp \
+Создал новый скрипт на основе предыдущих *.sh, добавил storage bucket и добавил этот файл startupscript.sh в бакет.
+Для создания правила fw, инстанса, установки ПО и его запуска.
+```
+$gcloud compute firewall-rules \
+create default-puma-server \
+--action allow \
+--target-tags puma-server \
+--source-ranges 0.0.0.0/0 \
+--rules TCP:9292
+$gcloud compute instances create reddit-appp \
 --boot-disk-size=10GB \
 --image-family ubuntu-1604-lts \
 --image-project=ubuntu-os-cloud \
 --machine-type=g1-small \
 --tags puma-server \
 --restart-on-failure \
---metadata-from-file startup-script-url=
-gs://startupscripts-infra-249015/install_ruby.sh \
---metadata-from-file startup-script-url=gs://startupscripts-infra-249015/install_mongodb.sh \
---metadata-from-file startup-script-url=gs://startupscripts-infra-249015/deploy.sh
+--metadata startup-script-url=gs://startupscripts-infra-249015/startupscript.sh \
 
+```
+Проверил, все ок.
 
 
 PR checklist
