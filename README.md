@@ -1,19 +1,21 @@
 # Выполнено Занятие №6 ДЗ №2 (GCP-2)
 
-## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=cloud-testapp)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=cloud-testapp)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
 
-    [*] [Знакомство с облачной инфраструктурой. Google Cloud Platform](#gcp)
-    [*] Задание со *
+    [*] [Деплой тествого приложения](#gcp2)
+    [*] Самостоятельная работа
+    [*] Дополнительное задание startupscript
+    [*] Дополнительное задание firewall  
 
 ### В процессе сделано:
 
-- Установим и настроим gcloud для работы с нашим аккаунтом;
-- Создадим хост с помощью gcloud;
-- Установим на нем ruby для работы приложения;
-- Установим MongoDB и запустим;
-- Задеплоим тестовое приложение, запустим и проверим его работу.
-
-<a name="#gcp"><h4>Парметры ВМ</h4></a>
+ - Установил и настроил gcloud для работы с моим аккаунтом;
+ - Создал хост с помощью gcloud;
+ - Установил на нем ruby для работы приложения;
+ - Установил MongoDB, запустил и enable службу Mongo;
+ - Задеплоид тестовое приложение, запустил и проверил его работу.
+ - 
+<a name="#gcp2"><h4>Парметры ВМ</h4></a>
 
 testapp_IP = 35.247.57.26
 
@@ -21,38 +23,101 @@ testapp_port = 9292
 
 <h4>Описание действий</h4>
 
-<a name="#task5"><h5> Настроен доступ к internalhost через bastion vm</h5></a>
+<a name="#task5"><h5> Установил и настроил gcloud для работы с моим аккаунтом</h5></a>
+Использую ВМ CentOS
 ```
-ssh-add ~/.ssh/id_rsa
-ssh-add -L
-notebook$ ssh -A 35.247.9.23
-gk@bastion:~$ ssh 10.138.0.4
+$sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
+[google-cloud-sdk]
+name=Google Cloud SDK
+baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOM
+$yum update
+$yum install google-cloud-sdk
+$gcloud init
+```
+Далее по инструкции, с проблемами и ошибками не столкнулся.
+```
+$gcloud auth list
+ Credentialed Accounts
+ ACTIVE  ACCOUNT
+ *       mail@klepach.com
 ```
 
-<a name="#task6"><h5>Подключения к internalhost в одну команду</h5></a>
+<a name="#task6"><h5>Создал хост с помощью gcloud</h5></a>
 ```
-ssh -At  gk@35.247.9.23 ssh 10.138.0.4
+gcloud compute instances create reddit-app\
+  --boot-disk-size=10GB \
+  --image-family ubuntu-1604-lts \
+  --image-project=ubuntu-os-cloud \
+  --machine-type=g1-small \
+  --tags puma-server \
+  --restart-on-failure
 ```
-<a name="#task7"><h5>Подключение к internalhost по команде: ssh internalhost</h5></a>
-Настраиваем файл .ssh/config
+Аналогично без проблем 
 ```
-Host internalhost
-  HostName 10.138.0.4
-  ProxyCommand ssh -W %h:%p bastion
-Host bastion
-  Hostname 35.247.9.23
-```
-<a name="#task8"><h5>Установлен и настроен VPN-сервер для серверов CGP, порт udp 18121</h5></a>
+$gcloud compute instances list | grep reddit-app
 
-<a name="#task9"><h5>Настроен и протестирован доступ с локальной машины по ssh на хост internalhost через VPN тоннель</h5></a>
+reddit-app  us-west1-a  g1-small                   10.138.0.5   35.247.57.26  RUNNING
+```
 
-<a name="#task10"><h5>Создан и поключен ssl сертификат для веб-интерфейса Pritunl</h5></a>
-https://35.247.9.23.sslip.io
+<a name="#task7"><h5>Выполнил оставшиеся пункты установки службы и приложения</h5></a>
+```
+$sudo apt update
+$sudo apt install -y ruby-full ruby-bundler build-essential
+
+$sudo rm /etc/apt/sources.list.d/mongodb*.list
+$sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E52529D4
+sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.0.list'
+$sudo apt update
+$sudo apt install -y mongodb-org
+$sudo systemctl start mongod
+$sudo systemctl enable mongod
+$systemctl status mongod
+● mongod.service - MongoDB Database Server
+   Loaded: loaded (/lib/systemd/system/mongod.service; enabled; vendor preset: enabled)
+   Active: active (running) since Wed 2019-08-14 08:25:49 UTC; 2h 4min ago
+$cd ~
+$git clone -b monolith https://github.com/express42/reddit.git
+$cd reddit
+$bundle install
+$puma -d
+$ps aux | grep puma | grep 9292
+gk       20617  0.0  2.3 652632 40380 ?        Sl   08:26   0:03 puma 3.10.0 (tcp://0.0.0.0:9292) [reddit]
+```
+Добавили правило tcp 9292 на файрволл gcp
+
+
+После эти команды заверул в скрипты deploy.sh,install_mongodb.sh, install_ruby.sh
+```
+chmod +x *.sh
+```
+<a name="#task10"><h5>Дополнительное задание startupscript, дополнительное задание firewall</h5></a>
+
+[root@kglinux ~]# gcloud compute instances create reddit-appp \
+--boot-disk-size=10GB \
+--image-family ubuntu-1604-lts \
+--image-project=ubuntu-os-cloud \
+--machine-type=g1-small \
+--tags puma-server \
+--restart-on-failure \
+--metadata-from-file startup-script-url=
+gs://startupscripts-infra-249015/install_ruby.sh \
+--metadata-from-file startup-script-url=gs://startupscripts-infra-249015/install_mongodb.sh \
+--metadata-from-file startup-script-url=gs://startupscripts-infra-249015/deploy.sh
+
+
 
 PR checklist
 
     [x] Выставил label с номером домашнего задания
     [x] Выставил label с темой домашнего задания
+
+Д
 
 ---
 # Выполнено Занятие №5 ДЗ №1 (GCP)
