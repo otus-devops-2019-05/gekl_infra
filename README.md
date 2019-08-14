@@ -1,5 +1,61 @@
-# Выполнено Занятие №5 ДЗ №1 (GCP)
+# Выполнено Занятие №6 ДЗ №2 (GCP-2)
 
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=cloud-testapp)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
+
+    [*] [Знакомство с облачной инфраструктурой. Google Cloud Platform](#gcp)
+    [*] Задание со *
+
+### В процессе сделано:
+
+- Установим и настроим gcloud для работы с нашим аккаунтом;
+- Создадим хост с помощью gcloud;
+- Установим на нем ruby для работы приложения;
+- Установим MongoDB и запустим;
+- Задеплоим тестовое приложение, запустим и проверим его работу.
+
+<a name="#gcp"><h4>Парметры ВМ</h4></a>
+
+testapp_IP = 35.247.57.26
+
+testapp_port = 9292
+
+<h4>Описание действий</h4>
+
+<a name="#task5"><h5> Настроен доступ к internalhost через bastion vm</h5></a>
+```
+ssh-add ~/.ssh/id_rsa
+ssh-add -L
+notebook$ ssh -A 35.247.9.23
+gk@bastion:~$ ssh 10.138.0.4
+```
+
+<a name="#task6"><h5>Подключения к internalhost в одну команду</h5></a>
+```
+ssh -At  gk@35.247.9.23 ssh 10.138.0.4
+```
+<a name="#task7"><h5>Подключение к internalhost по команде: ssh internalhost</h5></a>
+Настраиваем файл .ssh/config
+```
+Host internalhost
+  HostName 10.138.0.4
+  ProxyCommand ssh -W %h:%p bastion
+Host bastion
+  Hostname 35.247.9.23
+```
+<a name="#task8"><h5>Установлен и настроен VPN-сервер для серверов CGP, порт udp 18121</h5></a>
+
+<a name="#task9"><h5>Настроен и протестирован доступ с локальной машины по ssh на хост internalhost через VPN тоннель</h5></a>
+
+<a name="#task10"><h5>Создан и поключен ssl сертификат для веб-интерфейса Pritunl</h5></a>
+https://35.247.9.23.sslip.io
+
+PR checklist
+
+    [x] Выставил label с номером домашнего задания
+    [x] Выставил label с темой домашнего задания
+
+---
+# Выполнено Занятие №5 ДЗ №1 (GCP)
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
 
