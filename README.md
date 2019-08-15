@@ -1,5 +1,134 @@
-# Выполнено Занятие №5 ДЗ №1 (GCP)
+# Выполнено Занятие №6 ДЗ №2 (GCP-2)
 
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=cloud-testapp)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] [Деплой тествого приложения](#gcp2)
+    [*] Самостоятельная работа
+    [*] Дополнительное задание startupscript
+    [*] Дополнительное задание firewall  
+
+### В процессе сделано:
+
+ - Установил и настроил gcloud для работы с моим аккаунтом;
+ - Создал хост с помощью gcloud;
+ - Установил на нем ruby для работы приложения;
+ - Установил MongoDB, запустил и enable службу Mongo;
+ - Задеплоид тестовое приложение, запустил и проверил его работу.
+ - 
+<a name="#gcp2"><h4>Парметры ВМ</h4></a>
+
+testapp_IP = 35.247.57.26
+
+testapp_port = 9292
+
+<h4>Описание действий</h4>
+
+<a name="#task5"><h5> Установил и настроил gcloud для работы с моим аккаунтом</h5></a>
+Использую ВМ CentOS
+```
+$sudo tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
+[google-cloud-sdk]
+name=Google Cloud SDK
+baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOM
+$yum update
+$yum install google-cloud-sdk
+$gcloud init
+```
+Далее по инструкции, с проблемами и ошибками не столкнулся.
+```
+$gcloud auth list
+ Credentialed Accounts
+ ACTIVE  ACCOUNT
+ *       mail@klepach.com
+```
+
+<a name="#task6"><h5>Создал хост с помощью gcloud</h5></a>
+```
+gcloud compute instances create reddit-app\
+  --boot-disk-size=10GB \
+  --image-family ubuntu-1604-lts \
+  --image-project=ubuntu-os-cloud \
+  --machine-type=g1-small \
+  --tags puma-server \
+  --restart-on-failure
+```
+Аналогично без проблем 
+```
+$gcloud compute instances list | grep reddit-app
+
+reddit-app  us-west1-a  g1-small                   10.138.0.5   35.247.57.26  RUNNING
+```
+
+<a name="#task7"><h5>Выполнил оставшиеся пункты установки службы и приложения</h5></a>
+```
+$sudo apt update
+$sudo apt install -y ruby-full ruby-bundler build-essential
+
+$sudo rm /etc/apt/sources.list.d/mongodb*.list
+$sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E52529D4
+sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.0.list'
+$sudo apt update
+$sudo apt install -y mongodb-org
+$sudo systemctl start mongod
+$sudo systemctl enable mongod
+$systemctl status mongod
+● mongod.service - MongoDB Database Server
+   Loaded: loaded (/lib/systemd/system/mongod.service; enabled; vendor preset: enabled)
+   Active: active (running) since Wed 2019-08-14 08:25:49 UTC; 2h 4min ago
+$cd ~
+$git clone -b monolith https://github.com/express42/reddit.git
+$cd reddit
+$bundle install
+$puma -d
+$ps aux | grep puma | grep 9292
+gk       20617  0.0  2.3 652632 40380 ?        Sl   08:26   0:03 puma 3.10.0 (tcp://0.0.0.0:9292) [reddit]
+```
+Добавили правило tcp 9292 на файрволл gcp
+
+
+После эти команды заверул в скрипты deploy.sh,install_mongodb.sh, install_ruby.sh
+```
+chmod +x *.sh
+```
+<a name="#task10"><h5>Дополнительное задание startupscript, дополнительное задание firewall</h5></a>
+
+Создал новый скрипт на основе предыдущих *.sh, добавил storage bucket и добавил этот файл startupscript.sh в бакет.
+Для создания правила fw, инстанса, установки ПО и его запуска.
+```
+$gcloud compute firewall-rules \
+create default-puma-server \
+--action allow \
+--target-tags puma-server \
+--source-ranges 0.0.0.0/0 \
+--rules TCP:9292
+$gcloud compute instances create reddit-appp \
+--boot-disk-size=10GB \
+--image-family ubuntu-1604-lts \
+--image-project=ubuntu-os-cloud \
+--machine-type=g1-small \
+--tags puma-server \
+--restart-on-failure \
+--metadata startup-script-url=gs://startupscripts-infra-249015/startupscript.sh \
+
+```
+Проверил, все ок.
+
+
+PR checklist
+
+    [x] Выставил label с номером домашнего задания
+    [x] Выставил label с темой домашнего задания
+
+Д
+
+---
+# Выполнено Занятие №5 ДЗ №1 (GCP)
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)](https://travis-ci.com/otus-devops-2019-05/gekl_infra)
 
