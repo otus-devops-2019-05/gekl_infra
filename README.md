@@ -2,9 +2,9 @@
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=packer-base)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
 
- [*] Основное задание
- [*] Самостоятельная работа
- [*] Дополнительное задание *  
+    [*] Основное задание
+    [*] Самостоятельная работа
+    [*] Дополнительное задание *
 
 ### В процессе сделано:
 
