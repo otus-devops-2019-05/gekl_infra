@@ -1,0 +1,6 @@
+{
+"project_id": "infra-11111",
+"source_image_family": "ubuntu-1111-lts",
+"zone": "us-us1-a",
+"tags": "nike-server"
+}
