@@ -1,0 +1,6 @@
+{
+"project_id": "infra-249015",
+"source_image_family": "ubuntu-1604-lts",
+"zone": "us-west1-a",
+"tags": "puma-server"
+}
