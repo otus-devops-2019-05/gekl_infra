@@ -1,8 +1,159 @@
+# Выполнено Занятие №8 ДЗ №1 (TERRAFORM-1)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Основное задание
+    [*] Самостоятельная работа
+    [*] Задание со *
+    [*] Задание со **
+
+### В процессе сделано:
+
+#### Основное задание
+ - Установлен terraform на рабочее место администратора
+ - Выпонено задание по созданию инстанса
+ - Добавление ssh ключа
+
+#### Самостоятельная работа
+ - Определена переменная для приватного ключа private_key_path = "~/.ssh/appuser"
+ - Определена переменная для задания зоны
+ - Произведена проверка файлов с помощью  terraform fmt
+ - Создан файл terraform.tfvars.example
+
+#### Задание со *
+ - Создание ключа appuser1 в gcp
+ - Описано добавление нескольких ключей
+ - После добавление пользователя appuser_web и запуска terraformapply, данный пользователь затирается.
+#### Задание со **
+ - Создан файл lb.tf для генерации gcp load balancera
+ - Добавлен код создания нескольких инстансов и счетчик  
+
+
+# Выполнено Занятие №7 ДЗ №1 (PACKER)
+
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=packer-base)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Основное задание
+    [*] Самостоятельная работа
+    [*] Дополнительное задание *
+
+### В процессе сделано:
+
+#### Основное задание
+ - Установлен packer на рабочее место администратора
+ - Настроена авторизация packer в gcp
+ - Создан packer template (ubuntu16.json) со скриптами провижининга
+ - С помошью packer произведена валидация файла ubuntu16.json
+ - На основе него создан образ вм 
+ - После создана вм и устанволен app
+
+#### Самостоятельная работа
+ - Создан файл переменных
+ - В него спрятаны обязательные переменные и в файл добавлены переменные размера диска и tag firewall
+
+```
+{
+    "variables":
+        {
+    "project_id": null,
+    "source_image_family": null,
+    "zone": null,
+    "tags": null
+        },
+    "builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "{{user `project_id`}}",
+            "image_name": "reddit-base-{{timestamp}}",
+            "image_family": "reddit-base",
+            "source_image_family": "{{user `source_image_family`}}",
+            "zone": "{{user `zone`}}",
+            "ssh_username": "appuser",
+            "machine_type": "f1-micro",
+            "disk_size": "16",
+            "tags": "{{user `tags`}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/install_ruby.sh",
+            "execute_command": "sudo {{.Path}}"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install_mongodb.sh",
+            "execute_command": "sudo {{.Path}}"
+        }
+    ]
+}
+
+Пример файл переменных variables.json.example , реальный файл спрятан за .gitignore.
+Для запуска используется 
+packer build -var-file=./variables.json ./immutable.json
+
+{
+"project_id": "infra-111111",
+"source_image_family": "ubuntu-1111-lts",
+"zone": "us-west1-a",
+"tags": "nike-server"
+}
+```
+#### Дополнительное задание * 
+ - Подготовлен файл immutable.json
+```
+{
+    "variables":
+        {
+    "project_id": null,
+    "source_image_family": null,
+    "zone": null,
+    "tags": null
+        },
+    "builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "{{user `project_id`}}",
+            "image_name": "reddit-full-{{timestamp}}",
+            "image_family": "reddit-full",
+            "source_image_family": "{{user `source_image_family`}}",
+            "zone": "{{user `zone`}}",
+            "ssh_username": "appuser",
+            "machine_type": "f1-micro",
+            "disk_size": "16",
+            "tags": "{{user `tags`}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/install_ruby.sh",
+            "execute_command": "sudo {{.Path}}"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/install_mongodb.sh",
+            "execute_command": "sudo {{.Path}}"
+        },
+        {
+            "type": "file",
+            "source": "files/puma.service",
+            "destination": "~/puma.service"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/deploy.sh",
+            "execute_command": "sudo {{.Path}}"
+        }
+    ]
+}
+```
+ - Запуск инстанса на основе reddit-full)create-reddit-vm.sh)
+ 
+
 # Выполнено Занятие №6 ДЗ №2 (GCP-2)
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=cloud-testapp)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
 
-    [*] [Деплой тествого приложения](#gcp2)
     [*] Самостоятельная работа
     [*] Дополнительное задание startupscript
     [*] Дополнительное задание firewall  
@@ -107,7 +258,8 @@ create default-puma-server \
 --target-tags puma-server \
 --source-ranges 0.0.0.0/0 \
 --rules TCP:9292
-$gcloud compute instances create reddit-appp \
+
+$gcloud compute instances create reddit-app \
 --boot-disk-size=10GB \
 --image-family ubuntu-1604-lts \
 --image-project=ubuntu-os-cloud \
@@ -125,7 +277,6 @@ PR checklist
     [x] Выставил label с номером домашнего задания
     [x] Выставил label с темой домашнего задания
 
-Д
 
 ---
 # Выполнено Занятие №5 ДЗ №1 (GCP)
