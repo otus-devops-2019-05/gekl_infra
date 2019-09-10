@@ -1,3 +1,32 @@
+# Выполнено Занятие №8 ДЗ №1 (TERRAFORM-1)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Основное задание
+    [*] Самостоятельная работа
+    [*] Задание со *
+    [*] Задание со **
+
+### В процессе сделано:
+
+#### Основное задание
+ - Установлен terraform на рабочее место администратора
+ - Выпонено задание по созданию инстанса
+ - Добавление ssh ключа
+
+#### Самостоятельная работа
+ - Определена переменная для приватного ключа private_key_path = "~/.ssh/appuser"
+ - Определена переменная для задания зоны
+ - Произведена проверка файлов с помощью  terraform fmt
+ - Создан файл terraform.tfvars.example
+
+#### Задание со *
+ - Создание ключа appuser1 в gcp
+ - Описано добавление нескольких ключей
+ - После добавление пользователя appuser_web и запуска terraformapply, данный пользователь затирается.
+#### Задание со **
+ - Создан файл lb.tf для генерации gcp load balancera
+ - Добавлен код создания нескольких инстансов и счетчик  
+
 # Выполнено Занятие №7 ДЗ №1 (PACKER)
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=packer-base)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
