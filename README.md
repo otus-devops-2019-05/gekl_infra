@@ -1,3 +1,58 @@
+
+# Выполнено Занятие №9 (TERRAFORM-2)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Основное задание
+    [*] Самостоятельная работа
+    [*] Задание со *
+    [*] Задание со **
+
+### В процессе сделано:
+
+#### Основное задание
+ - Выпонено задание по созданию инстанса
+ - Добавление ssh ключа
+
+#### Самостоятельная работа
+
+Текущую конфигурацию terraform разбил на два модуля app и db, и создал модуль vpc для правил файрвола. В файле main.tf указываем откуда загружать модули [source]:
+
+```
+module "app" {
+  source          = "../modules/app"
+  public_key_path = "${var.public_key_path}"
+  zone            = "${var.zone}"
+  app_disk_image  = "${var.app_disk_image}"
+}
+
+module "db" {
+  source          = "../modules/db"
+  public_key_path = "${var.public_key_path}"
+  zone            = "${var.zone}"
+  db_disk_image   = "${var.db_disk_image}"
+}
+
+module "vpc" {
+  source        = "../modules/vpc"
+  source_ranges = ["${var.ip_access_range}"]
+}
+
+```
+Модули загружаются с помощью команды `terraform get`
+Разделил инфраструктуру на два окружения:
+- stage
+- prod
+
+#### Задание со*
+Для хранения текущего стейта настроил remote backend используя для этого GCS. Для создания GCS используется storage-bucket.tf после чего, происходит инициализация в stage и prod конфигурациях через terraform init. Если присутствовал локальный стейт - будет предложено его перенести в remote. Если будет выполнено одновременное обращение к стейту, то сработает блокировка.
+
+#### Задание со**
+Добавлены provisioner для app и db.
+
+
+#### Задание со **
+
+
 # Выполнено Занятие №8 ДЗ №1 (TERRAFORM-1)
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
 
