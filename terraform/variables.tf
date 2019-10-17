@@ -11,7 +11,7 @@ variable region {
 }
 
 variable public_key_path {
-  # Описание переменной
+  #  Описание переменной
   description = "Path to the public key used for ssh access"
   default = "~/.ssh/appuser.pub"
 }
