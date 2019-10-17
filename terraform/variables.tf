@@ -6,7 +6,7 @@ variable project {
 variable region {
   description = "Region"
 
-  # Значение по умолчанию
+  #  Значение по умолчанию
   default = "us-west1"
 }
 
