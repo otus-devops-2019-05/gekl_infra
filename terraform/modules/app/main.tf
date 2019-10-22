@@ -18,14 +18,14 @@ resource "google_compute_instance" "app" {
     }
   }
 
-  provisioner "file" {
-     source      = "../modules/app/puma.service"
-     destination = "/tmp/puma.service"
-   }
+#  provisioner "file" {
+#     source      = "../modules/app/puma.service"
+#     destination = "/tmp/puma.service"
+#   }
 
-  provisioner "remote-exec" {
-     script = "../modules/app/deploy.sh"
-   }
+#  provisioner "remote-exec" {
+#     script = "../modules/app/deploy.sh"
+#   }
 
 
   metadata {
