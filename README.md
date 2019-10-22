@@ -1,3 +1,24 @@
+# Выполнено Занятие №10 (ANSIBLE-1)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Основное задание
+    [*] Задание со *
+
+### В процессе сделано:
+
+ - Установка Ansible
+ - Знакомство с базовыми функциями и инвентори
+ - Выполнение различных модулей на подготовленной в прошлых ДЗ инфраструктуре
+ - Пишем простой плейбук
+
+#### Основное задание
+ - Утановлен Ansible
+ - Протестированы разные варианты его испльзования, написания inventory и cfg файла
+ - Написан простой playbook для клонирования репозитория
+ 
+#### Задание со*
+
+На основе терраформ стейт файла, генерируется json файл, написанный скрипт указывается в cfg файле ansible.
 
 # Выполнено Занятие №9 (TERRAFORM-2)
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
@@ -48,10 +69,6 @@ module "vpc" {
 
 #### Задание со**
 Добавлены provisioner для app и db.
-
-
-#### Задание со **
-
 
 # Выполнено Занятие №8 ДЗ №1 (TERRAFORM-1)
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
