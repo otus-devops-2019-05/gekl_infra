@@ -3,13 +3,13 @@ resource "google_compute_address" "reddit-db-ip" {
   address_type = "INTERNAL"
 }
 
-  data "template_file" "init" {
-    template = "${file("../modules/db/mongod.conf.tpl")}"
-
-    vars = {
-      reddit-db-ip = "${google_compute_address.reddit-db-ip.address}"
-    }
-  }
+#  data "template_file" "init" {
+#    template = "${file("../modules/db/mongod.conf.tpl")}"
+#
+#    vars = {
+#      reddit-db-ip = "${google_compute_address.reddit-db-ip.address}"
+#    }
+#  }
 
 
 resource "google_compute_instance" "db" {
@@ -33,17 +33,17 @@ resource "google_compute_instance" "db" {
     ssh-keys = "appuser:${file(var.public_key_path)}"
   }
  
-  provisioner "file" {
-     content     = "${data.template_file.init.rendered}"
-     destination = "/tmp/mongod.conf"
-  }
+#  provisioner "file" {
+#     content     = "${data.template_file.init.rendered}"
+#     destination = "/tmp/mongod.conf"
+#  }
 
-  provisioner "remote-exec" {
-     inline = [
-       "sudo mv -f /tmp/mongod.conf /etc/mongod.conf",
-       "sudo systemctl restart mongod.service",
-      ]
-   }
+#  provisioner "remote-exec" {
+#     inline = [
+#       "sudo mv -f /tmp/mongod.conf /etc/mongod.conf",
+#       "sudo systemctl restart mongod.service",
+#      ]
+#   }
 }
 
 # Правило firewall
