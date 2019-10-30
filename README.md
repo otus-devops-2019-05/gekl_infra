@@ -1,3 +1,72 @@
+
+# Выполнено Занятие №11 (ANSIBLE-2)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=ansible-2)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Создание плейбука для настройки и деплоя приложения и БД
+    [*] Создание одного плейбука для нескольких сценариев
+    [*] Создание нескольких плейбуков
+    [*] Использование готовых Dynamic Inventory (*)
+    [*] Провижининг в Packer
+
+### Создание плейбука для настройки и деплоя приложения и БД
+    
+    В этом способе у нас один плейбук и мы запускаем его на разных хостах с помощью опций --limit, а так же ограничиваем исполнение через --tags
+
+#### Настройка базы данных modgoDB
+
+```shell
+ansible-playbook reddit_app.yml --limit db --tags db-tag
+```
+#### Настройка инстанса приложения
+
+```shell
+ansible-playbook reddit_app.yml --limit app --tags app-tag
+```
+#### Деплой приложения
+
+```shell
+ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+```
+### Создание одного плейбука для нескольких сценариев
+#### Сценарий для mongoDB
+```shell
+ansible-playbook reddit_app2.yml --tags db-tag
+```
+#### Сценарий для App
+```shell
+ansible-playbook reddit_app2.yml --tags app-tag
+```
+#### Сценарий для деплоя приложения
+```shell
+ansible-playbook reddit_app2.yml --tags deploy-tag
+```
+### Создание нескольких плейбуков
+Созадим app.yml, db.yml и deploy.yml и site.yml в который импортируем 3 созданных плейбука.
+
+```shell
+ansible-playbook site.yml
+```
+### Использование готовых Dynamic Inventory (*)
+
+```shell
+pip install requests
+pip install google-auth
+gcloud iam service-accounts keys create ~/ansible_gcp_key.json --iam-account ansible@infra-249015.iam.gserviceaccount.com
+```
+Добавляем в `ansible.cfg`  плагин:
+
+```
+[inventory]
+enable_plagins = gcp_compute
+```
+И пишем yml файл для inventry, после чего добавляем его в ansible.cfg
+
+### Провижининг в Packer
+Создадим 2 плейбука: 
+- packer_app.yml
+- packer_db.yml
+
+
 # Выполнено Занятие №10 (ANSIBLE-1)
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=terraform-1)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
 
