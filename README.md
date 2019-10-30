@@ -169,7 +169,6 @@ module "vpc" {
  - Создан файл lb.tf для генерации gcp load balancera
  - Добавлен код создания нескольких инстансов и счетчик  
 
-
 # Выполнено Занятие №7 ДЗ №1 (PACKER)
 
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=packer-base)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
