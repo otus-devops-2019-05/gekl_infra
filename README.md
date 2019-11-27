@@ -1,3 +1,16 @@
+# Выполнено Занятие №12 (ANSIBLE-3)
+## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=ansible-2)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
+
+    [*] Переносим созданные плейбуки в раздельные роли
+    [*] Описываем два окружения
+    [*] Используем коммьюнити роль nginx
+    [*] Используем AnsibleVault для наших окружений
+
+### Самостоятельная работа
+    [*] Добавление конфигурации в Terraform 80 порта
+    [*] Добавляем вызов jdauphant.nginx
+    [*] Задание со * динамический инвентори
+    [*] Задание со * 
 
 # Выполнено Занятие №11 (ANSIBLE-2)
 ## gekl_infra [![Build Status](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=ansible-2)](https://travis-ci.com/otus-devops-2019-05/gekl_infra.svg?branch=master)
